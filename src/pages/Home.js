@@ -6,15 +6,14 @@ import logo from "../assets/logo.png";
 import { Link, Route, Routes } from "react-router-dom";
 import { userQuery } from "../utility/data";
 import { client } from "../components/client";
+import { fetchUser } from "../utility/fetchUser";
 const Home = () => {
    const [sidebarToggle, setSidebarToggle] = useState(false);
    const [user, setUser] = useState({});
    const scrollRef = useRef(null);
 
-   const userInfo =
-      localStorage.getItem("user") !== "undefined"
-         ? JSON.parse(localStorage.getItem("user"))
-         : localStorage.clear();
+   const userInfo = fetchUser();
+     
 
    useEffect(() => {
       const query = userQuery(userInfo?.uid);
