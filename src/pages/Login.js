@@ -6,15 +6,14 @@ import auth from "../firebase.init";
 import { useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { client } from "../components/client";
+import { Oval } from "react-loader-spinner";
 
 const Login = () => {
    const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
    const navigate = useNavigate();
 
-   if (loading) {
-      return <h1>Loading...</h1>;
-   }
    if (user) {
+      localStorage.setItem("user", JSON.stringify(user.user));
       const { displayName, photoURL, uid } = user.user;
 
       const doc = {
@@ -44,9 +43,26 @@ const Login = () => {
                <img src={logo} alt="" className=" max-w-[150px]" />
                <button
                   onClick={() => signInWithGoogle()}
-                  className="bg-white rounded-md flex items-center p-2 gap-2 outline-none shadow-2xl shadow-black"
+                  className="bg-white rounded-md flex items-center p-3 outline-none shadow-2xl shadow-black"
                >
-                  <FcGoogle className="text-2xl"></FcGoogle> Sign in with Google
+                  {!loading ? (
+                     <span className="flex items-center gap-2">
+                        <FcGoogle className="text-2xl"></FcGoogle> Sign in with
+                        Google
+                     </span>
+                  ) : (
+                     <span className="flex items-center gap-2">
+                        Logging in{" "}
+                        <Oval
+                           ariaLabel="loading-indicator"
+                           height={20}
+                           width={20}
+                           strokeWidth={5}
+                           color="black"
+                           secondaryColor="lightgray"
+                        />
+                     </span>
+                  )}
                </button>
             </div>
          </div>
